@@ -1,0 +1,59 @@
+meta {
+  name: Ajouter une nouvelle sauvegarde
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/save
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id": "",
+    "id_box": "",
+    "id_map": ""
+  }
+}
+
+example {
+  name: 201 Response
+  description: La sauvegarde a bien été ajoutée
+  
+  request: {
+    url: {{baseUrl}}/save
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "id": "",
+        "id_box": "",
+        "id_map": ""
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 201
+      text: Created
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+        "id": "",
+        "id_box": "",
+        "id_map": ""
+        }
+      '''
+    }
+  }
+}

@@ -1,0 +1,15 @@
+meta {
+  name: delete save
+  type: http
+  seq: 4
+}
+
+delete {
+  url: http://localhost:{{PORT}}/save
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

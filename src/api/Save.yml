@@ -17,42 +17,6 @@ tags:
     description: Operations sur les sauvegardes du héros
 paths:
   /save:
-    get:
-      tags:
-        - Sauvegarde
-      summary: recherche la sauvegarde d'un héros
-      operationId: rechercheSauvegarde
-      description: |
-        En entrant les options appropriés, vous pouvez trouver
-        les sauvegardes d'un héros d'un joueur.
-      parameters:
-        - in: query
-          name: idUser
-          description: Identifiant de l'utilisateur
-          required: true
-          schema:
-            type: integer
-            format: int32
-            minimum: 0
-        - in: query
-          name: idHero
-          description: Identifiant du héros
-          required: true
-          schema:
-            type: integer
-            format: int32
-            minimum: 0
-      responses:
-        '200':
-          description: search results matching criteria
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Sauvegarde'
-        '400':
-          description: bad input parameter
     post:
       tags:
         - Sauvegarde
@@ -89,24 +53,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Sauvegarde'
         description: Sauvegarde à mettre à jour
-    delete:
+  /save/{idHero}:
+    get:
       tags:
         - Sauvegarde
-      summary: supprime la sauvegarde d'un héros
-      operationId: supprimeSauvegarde
+      summary: recherche la sauvegarde d'un héros
+      operationId: rechercheSauvegarde
       description: |
-        En entrant les options appropriés, vous pouvez supprimer
-        la sauvegarde d'un héros d'un joueur.
+        En entrant les options appropriés, vous pouvez trouver
+        les sauvegardes d'un héros d'un joueur.
       parameters:
-        - in: query
-          name: idUser
-          description: Identifiant de l'utilisateur
-          required: true
-          schema:
-            type: integer
-            format: int32
-            minimum: 0
-        - in: query
+        - in: path
           name: idHero
           description: Identifiant du héros
           required: true
@@ -115,12 +72,36 @@ paths:
             format: int32
             minimum: 0
       responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sauvegarde'
+        '400':
+          description: bad input parameter
+    delete:
+      tags:
+        - Sauvegarde
+      summary: Supprime une sauvegarde
+      operationId: supprimeSauvegarde
+      description: supprime une sauvegarde de la base de données
+      parameters:
+        - in: path
+          name: idHero
+          description: id du héros
+          required: true
+          schema:
+            type: number
+      responses:
         '201':
-          description: héros supprimé
+          description: sauvegarde supprimé
         '400':
           description: 'invalid parameter'
         '404':
-          description: le héros n'existe pas
+          description: la sauvegarde n'existe pas
 components:
   schemas:
     Sauvegarde:

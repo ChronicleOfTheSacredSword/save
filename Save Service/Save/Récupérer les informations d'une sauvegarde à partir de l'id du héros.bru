@@ -1,0 +1,51 @@
+meta {
+  name: Récupérer les informations d'une sauvegarde à partir de l'id du héros
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/save/:idHero
+  body: none
+  auth: inherit
+}
+
+params:path {
+  position: 
+}
+
+example {
+  name: 200 Response
+  description: La sauvegarde a été trouvée
+  
+  request: {
+    url: {{baseUrl}}/save/:idHero
+    method: GET
+    mode: none
+    params:path: {
+      position: 
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+        "id": "",
+        "id_box": "",
+        "id_map": ""
+        }
+      '''
+    }
+  }
+}

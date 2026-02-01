@@ -1,0 +1,15 @@
+meta {
+  name: post save 
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:{{PORT}}/save
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

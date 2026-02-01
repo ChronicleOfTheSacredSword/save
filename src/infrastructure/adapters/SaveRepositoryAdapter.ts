@@ -1,107 +1,45 @@
 import {SaveRepositoryPort} from "../../application/ports/outbound/SaveRepositoryPort";
 import {Save} from "../../domain/models/Save";
-import db from '../../../db';
+import redis from "../../../db";
 
-class HerosRepo implements SaveRepositoryPort {
-
-    async findByHeroId(id_user: number, id_hero: number): Promise<Save | null> {
-        const res = await db.query(
-            `
-			SELECT
-				*
-			FROM heroes
-			WHERE id_user = $1
-			AND id = $2
-			`,
-            [id_user, id_hero]
-        );
-
-        return res.rows[0] ?? null;
+class SaveRepo implements SaveRepositoryPort {
+    async getSaveById(id: string):  Promise<Save | null>{
+        const res = await redis.get(id);
+        if(res != null){
+            const parsedRes = await JSON.parse(res);
+            return {id: id, id_box: parsedRes.id_box, id_map: parsedRes.id_map};
+        }
+        return null;
     }
 
-    async save(heros: Omit<Save, 'id'>): Promise<Save> {
-        const res = await db.query(
-            `
-			INSERT INTO heroes (
-			    id_user,
-				name,
-				class,
-			    pv,
-			    atk,
-			    lvl,
-			    xp,
-			    gold
-			)
-			VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-			RETURNING
-				id,
-				name
-			`,
-            [
-                heros.id_user,
-                heros.name,
-                heros.class,
-                heros.pv,
-                heros.atk,
-                heros.lvl,
-                heros.xp,
-                heros.gold
-            ]
-        );
-
-        return res.rows[0];
+    async insertSave(save: Save):  Promise<Save | null>{
+        try{
+            await redis.set(save.id, JSON.stringify({map: save.id_map, box: save.id_box}));
+            return save;
+        }catch (e){
+            console.error(e);
+            return null;
+        }
     }
 
-    async update(heros: Save): Promise<Save | null> {
-        const res = await db.query(
-            `
-			UPDATE heroes
-			SET name = $1,
-			    class = $2,
-			    pv = $3,
-			    atk = $4,
-			    lvl = $5,
-			    xp = $6,
-			    gold = $7
-			WHERE id = $8
-			AND id_user = $9
-            RETURNING
-				id,
-				name
-			`,
-            [
-                heros.name,
-                heros.class,
-                heros.pv,
-                heros.atk,
-                heros.lvl,
-                heros.xp,
-                heros.gold,
-                heros.id,
-                heros.id_user
-            ]
-        );
-
-        return res.rows[0] ?? null;
+    async updateSave(save: Save):  Promise<Save | null>{
+        try{
+            await redis.set(save.id, JSON.stringify({map: save.id_map, box: save.id_box}));
+            return save;
+        }catch (e){
+            console.error(e);
+            return null;
+        }
     }
 
-    async delete(id_user: number, id_heros: number): Promise<number> {
-        const res = await db.query(
-            `
-			DELETE FROM heroes
-			WHERE id = $1
-            AND id_user = $2
-            RETURNING
-				id,
-				name
-			`,
-            [
-                id_heros,
-                id_user
-            ]
-        );
-
-        return res.rows[0];
+    async deleteSave(id: string): Promise<string | null>{
+        try{
+            await redis.del(id);
+            return id;
+        }catch (e){
+            console.error(e);
+            return null;
+        }
     }
+}export default SaveRepo
 
-} export default HerosRepo

@@ -1,8 +1,8 @@
 import {Save} from "../../../domain/models/Save";
 
 export interface SaveRepositoryPort {
-    findByHeroId(id_user: number, id_heros: number): Promise<Save | null>;
-    save(save: Omit<Save, "id_hero">): Promise<Save>;
-    update(save: Save): Promise<Save | null>;
-    delete(id_user: number, id_heros: number): Promise<number | null>;
+    getSaveById(id: string):  Promise<Save | null>;
+    insertSave(map: Save):  Promise<Save | null>;
+    updateSave(map: Save):  Promise<Save | null>;
+    deleteSave(id: string):  Promise<string | null>;
 }

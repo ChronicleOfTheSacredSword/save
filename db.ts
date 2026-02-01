@@ -1,22 +1,23 @@
-import { Pool, PoolConfig } from 'pg';
+import Redis from 'ioredis';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log(process.env.DB_PASSWORD);
-
-const poolConfig: PoolConfig = {
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
+const redisConfig = {
+    host: process.env.DB_HOST || '127.0.0.1',
+    port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 6379,
     password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT ? Number(process.env.DB_PORT) : undefined,
+    db: process.env.DB_INDEX ? Number(process.env.DB_INDEX) : 0,
 };
 
-const pool = new Pool(poolConfig);
+const redis = new Redis(redisConfig);
 
-pool.on('connect', () => {
-    console.log('Connected to the database');
+redis.once('connect', () => {
+    console.log('Connected to Redis');
 });
 
-export default pool;
+// Keep .on for errors so you know if things break later
+redis.on('error', (err) => {
+    console.error('Redis Error:', err);
+});
+export default redis;

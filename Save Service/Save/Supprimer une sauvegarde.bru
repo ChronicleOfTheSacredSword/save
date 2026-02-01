@@ -1,0 +1,51 @@
+meta {
+  name: Supprimer une sauvegarde
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{baseUrl}}/save/:idHero
+  body: none
+  auth: inherit
+}
+
+params:path {
+  position: 
+}
+
+example {
+  name: 200 Response
+  description: La sauvegard a été suprpimée
+  
+  request: {
+    url: {{baseUrl}}/save/:idHero
+    method: DELETE
+    mode: none
+    params:path: {
+      position: 
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+        "id": "",
+        "id_box": "",
+        "id_map": ""
+        }
+      '''
+    }
+  }
+}
