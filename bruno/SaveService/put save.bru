@@ -6,10 +6,19 @@ meta {
 
 put {
   url: http://localhost:{{PORT}}/save
-  body: none
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "id": 1,
+    "id_map": 1,
+    "id_box": 2
+  }
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

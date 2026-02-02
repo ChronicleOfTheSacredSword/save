@@ -13,7 +13,7 @@ export class SaveController {
   }
 
   async getSaveById(req: Request, res: Response) {
-    const map: Save | null = await this.saveService.getSaveById(req.params.id);
+    const map: Save | null = await this.saveService.getSaveById(Number.parseInt(req.params.id));
     if (map) {
       res.status(200).send(map);
     } else {

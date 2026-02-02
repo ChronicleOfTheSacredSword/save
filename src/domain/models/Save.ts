@@ -1,5 +1,5 @@
 export interface Save {
-    id: string;
+    id: number;
     id_map: number;
     id_box: number;
 }

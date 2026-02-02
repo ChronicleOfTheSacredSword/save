@@ -1,15 +1,24 @@
 meta {
-  name: post save 
+  name: post save
   type: http
   seq: 2
 }
 
 post {
   url: http://localhost:{{PORT}}/save
-  body: none
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "id": 1,
+    "id_map": 1,
+    "id_box": 1
+  }
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

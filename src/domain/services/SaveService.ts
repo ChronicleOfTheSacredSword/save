@@ -4,7 +4,7 @@ import {Save} from "../models/Save";
 
 export class SaveService implements SaveServicePort {
     constructor(private readonly repo: SaveRepositoryPort) {}
-    getSaveById(id: string): Promise<Save | null>{
+    getSaveById(id: number): Promise<Save | null>{
         if(id === undefined) {
             throw new Error("A save's id must be provided");
         }

@@ -3,18 +3,19 @@ import {Save} from "../../domain/models/Save";
 import redis from "../../../db";
 
 class SaveRepo implements SaveRepositoryPort {
-    async getSaveById(id: string):  Promise<Save | null>{
-        const res = await redis.get(id);
+    async getSaveById(id: number):  Promise<Save | null>{
+        const res = await redis.get(id.toString());
         if(res != null){
             const parsedRes = await JSON.parse(res);
-            return {id: id, id_box: parsedRes.id_box, id_map: parsedRes.id_map};
+            console.log(parsedRes);
+            return {id: id, id_box: parsedRes.map, id_map: parsedRes.box};
         }
         return null;
     }
 
     async insertSave(save: Save):  Promise<Save | null>{
         try{
-            await redis.set(save.id, JSON.stringify({map: save.id_map, box: save.id_box}));
+            await redis.set(save.id.toString(), JSON.stringify({map: save.id_map, box: save.id_box}));
             return save;
         }catch (e){
             console.error(e);
@@ -24,7 +25,7 @@ class SaveRepo implements SaveRepositoryPort {
 
     async updateSave(save: Save):  Promise<Save | null>{
         try{
-            await redis.set(save.id, JSON.stringify({map: save.id_map, box: save.id_box}));
+            await redis.set(save.id.toString(), JSON.stringify({map: save.id_map, box: save.id_box}));
             return save;
         }catch (e){
             console.error(e);
