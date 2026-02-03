@@ -10,8 +10,10 @@ import {SaveService} from "../domain/services/SaveService";
 import {SaveController} from "../presentation/controllers/SaveController";
 
 
+const cors = require('cors');
 const app = express();
 app.use(express.json());
+app.use(cors({ origin: 'http://localhost:9000' }));
 
 
 const file  = fs.readFileSync(require.resolve('../api/Save.yml'), 'utf8')
