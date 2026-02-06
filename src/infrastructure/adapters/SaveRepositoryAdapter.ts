@@ -8,7 +8,6 @@ class SaveRepo implements SaveRepositoryPort {
         const res = await redis.get(id.toString());
         if(res != null){
             const parsedRes = await JSON.parse(res);
-            console.log(parsedRes);
             return {id: id, id_box: parsedRes.box, id_map: parsedRes.map};
         }
         return null;
