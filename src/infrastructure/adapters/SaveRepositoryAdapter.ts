@@ -8,7 +8,7 @@ class SaveRepo implements SaveRepositoryPort {
         if(res != null){
             const parsedRes = await JSON.parse(res);
             console.log(parsedRes);
-            return {id: id, id_box: parsedRes.map, id_map: parsedRes.box};
+            return {id: id, id_box: parsedRes.box, id_map: parsedRes.map};
         }
         return null;
     }
